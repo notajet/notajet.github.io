@@ -1,0 +1,638 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Taj Foley — Robotics & AI Engineer</title>
+  <style>
+    :root {
+      --accent: #6C63FF;
+      --white: #ffffff;
+      --dark: #080808;
+      --text-muted: rgba(255,255,255,0.55);
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+      background: var(--dark);
+      color: #fff;
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ── NAV ── */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 1.4rem 3rem;
+      transition: background 0.4s, padding 0.4s;
+    }
+    nav.scrolled {
+      background: rgba(8,8,8,0.88);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      padding: 1rem 3rem;
+      border-bottom: 1px solid rgba(255,255,255,0.05);
+    }
+    .nav-logo {
+      font-size: 1.15rem;
+      font-weight: 700;
+      color: #fff;
+      letter-spacing: -0.5px;
+      text-decoration: none;
+    }
+    .nav-logo span { color: var(--accent); }
+    .nav-links {
+      display: flex;
+      gap: 2.25rem;
+      list-style: none;
+    }
+    .nav-links a {
+      color: rgba(255,255,255,0.6);
+      text-decoration: none;
+      font-size: 0.85rem;
+      letter-spacing: 0.02em;
+      transition: color 0.2s;
+    }
+    .nav-links a:hover { color: #fff; }
+
+    /* ── HERO ── */
+    .hero {
+      min-height: 100vh;
+      position: relative;
+      display: flex;
+      align-items: center;
+      /*
+        CUSTOMISE: Replace 'hero-photo.jpg' with your photo filename.
+        Place the photo in the same folder as this file.
+        Best: a portrait or 3/4 shot with some space on the left side.
+      */
+      background-image: url('hero-photo.jpg');
+      background-size: cover;
+      background-position: center top;
+      background-color: #111118; /* fallback colour while photo loads */
+    }
+    .hero-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(
+        to right,
+        rgba(8,8,8,0.15) 0%,
+        rgba(8,8,8,0.45) 45%,
+        rgba(8,8,8,0.82) 100%
+      );
+    }
+    .hero-content {
+      position: relative;
+      z-index: 1;
+      margin-left: auto;
+      max-width: 560px;
+      padding: 2rem 3.5rem 2rem 1.5rem;
+    }
+    .hero-eyebrow {
+      font-size: 0.7rem;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.4);
+      margin-bottom: 1.1rem;
+    }
+    .hero-name {
+      font-size: clamp(3.5rem, 7.5vw, 6rem);
+      font-weight: 800;
+      line-height: 0.95;
+      letter-spacing: -3px;
+      margin-bottom: 1.1rem;
+    }
+    .hero-role {
+      font-size: 1rem;
+      color: rgba(255,255,255,0.5);
+      letter-spacing: 0.06em;
+      margin-bottom: 0.6rem;
+    }
+    .hero-tagline {
+      font-size: 1rem;
+      color: rgba(255,255,255,0.42);
+      max-width: 360px;
+      line-height: 1.65;
+      margin-bottom: 1.8rem;
+    }
+    .hero-pills {
+      display: flex;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+      margin-bottom: 2.2rem;
+    }
+    .pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      padding: 6px 14px;
+      border: 1px solid rgba(255,255,255,0.15);
+      border-radius: 100px;
+      font-size: 0.78rem;
+      color: rgba(255,255,255,0.65);
+      background: rgba(255,255,255,0.04);
+    }
+    .pill-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: #4ade80;
+      flex-shrink: 0;
+    }
+    .hero-btns {
+      display: flex;
+      gap: 0.75rem;
+      flex-wrap: wrap;
+    }
+    .btn-solid {
+      padding: 13px 30px;
+      background: #fff;
+      color: #080808;
+      border: none;
+      border-radius: 100px;
+      font-size: 0.875rem;
+      font-weight: 700;
+      cursor: pointer;
+      text-decoration: none;
+      display: inline-block;
+      transition: opacity 0.2s, transform 0.2s;
+    }
+    .btn-solid:hover { opacity: 0.88; transform: translateY(-1px); }
+    .btn-ghost {
+      padding: 13px 30px;
+      background: transparent;
+      color: rgba(255,255,255,0.8);
+      border: 1px solid rgba(255,255,255,0.2);
+      border-radius: 100px;
+      font-size: 0.875rem;
+      cursor: pointer;
+      text-decoration: none;
+      display: inline-block;
+      transition: border-color 0.2s, color 0.2s, transform 0.2s;
+    }
+    .btn-ghost:hover {
+      border-color: rgba(255,255,255,0.5);
+      color: #fff;
+      transform: translateY(-1px);
+    }
+
+    /* Scroll hint */
+    .scroll-hint {
+      position: absolute;
+      bottom: 2.5rem;
+      left: 50%;
+      transform: translateX(-50%);
+      text-align: center;
+      z-index: 1;
+      animation: fadeIn 1s 1s both;
+    }
+    .scroll-hint p {
+      font-size: 0.7rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.3);
+      margin-bottom: 0.5rem;
+    }
+    .chevron {
+      width: 18px;
+      height: 18px;
+      border-right: 1.5px solid rgba(255,255,255,0.25);
+      border-bottom: 1.5px solid rgba(255,255,255,0.25);
+      transform: rotate(45deg);
+      margin: 0 auto;
+      animation: bounce 2.2s ease-in-out infinite;
+    }
+    @keyframes bounce {
+      0%, 100% { transform: rotate(45deg) translateY(0); opacity: 0.5; }
+      50% { transform: rotate(45deg) translateY(6px); opacity: 1; }
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateX(-50%) translateY(8px); }
+      to   { opacity: 1; transform: translateX(-50%) translateY(0); }
+    }
+
+    /* ── SHARED SECTION STYLES ── */
+    .section {
+      padding: 7rem 3rem;
+    }
+    .section-eyebrow {
+      font-size: 0.68rem;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.3);
+      margin-bottom: 0.85rem;
+    }
+    .section-heading {
+      font-size: clamp(1.8rem, 3.5vw, 2.8rem);
+      font-weight: 800;
+      letter-spacing: -1.5px;
+      line-height: 1.05;
+      margin-bottom: 3rem;
+    }
+
+    /* ── PROJECTS ── */
+    #projects {
+      background: #0c0c0c;
+    }
+    .projects-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1rem;
+    }
+    .proj-card {
+      position: relative;
+      border-radius: 14px;
+      overflow: hidden;
+      background: #161616;
+      cursor: pointer;
+      aspect-ratio: 4/3;
+    }
+    .proj-card.featured {
+      grid-column: span 2;
+      aspect-ratio: 21/9;
+    }
+    /* Replace background-color with background-image: url('project-screenshot.jpg') */
+    .proj-bg {
+      width: 100%;
+      height: 100%;
+      background-size: cover;
+      background-position: center;
+      transition: transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    }
+    .proj-card:hover .proj-bg { transform: scale(1.06); }
+
+    /* placeholder emoji centres */
+    .proj-bg-placeholder {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 3.5rem;
+      transition: transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    }
+    .proj-card:hover .proj-bg-placeholder { transform: scale(1.06); }
+
+    .proj-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to top, rgba(0,0,0,0.88) 0%, rgba(0,0,0,0) 55%);
+      padding: 1.5rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+    }
+    .proj-cat {
+      font-size: 0.68rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.45);
+      margin-bottom: 0.35rem;
+    }
+    .proj-title {
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: #fff;
+      letter-spacing: -0.3px;
+      margin-bottom: 0.3rem;
+    }
+    .proj-desc {
+      font-size: 0.8rem;
+      color: rgba(255,255,255,0.45);
+      line-height: 1.5;
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.35s ease, opacity 0.35s ease;
+      opacity: 0;
+    }
+    .proj-card:hover .proj-desc {
+      max-height: 80px;
+      opacity: 1;
+    }
+
+    /* ── ABOUT ── */
+    #about {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 5rem;
+      align-items: start;
+    }
+    .about-body p {
+      color: rgba(255,255,255,0.55);
+      line-height: 1.85;
+      font-size: 0.95rem;
+      margin-bottom: 1rem;
+    }
+    .about-body p:last-of-type { margin-bottom: 2rem; }
+    .about-img {
+      border-radius: 14px;
+      overflow: hidden;
+      aspect-ratio: 3/4;
+      background: #161616;
+    }
+    .about-img img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    /* ── SKILLS ── */
+    #skills {
+      background: #0c0c0c;
+    }
+    .skills-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 0 4rem;
+    }
+    .skill-group { padding-bottom: 1rem; }
+    .skill-group-label {
+      font-size: 0.68rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.25);
+      padding-bottom: 0.85rem;
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+      margin-bottom: 0.25rem;
+    }
+    .skill-row {
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      padding: 0.55rem 0;
+      border-bottom: 1px solid rgba(255,255,255,0.04);
+      font-size: 0.9rem;
+      color: rgba(255,255,255,0.65);
+      transition: color 0.2s;
+    }
+    .skill-row:hover { color: #fff; }
+    .skill-dot {
+      width: 5px;
+      height: 5px;
+      border-radius: 50%;
+      background: var(--accent);
+      flex-shrink: 0;
+      opacity: 0.7;
+    }
+
+    /* ── CONTACT ── */
+    #contact {
+      text-align: center;
+      padding: 9rem 3rem;
+    }
+    .contact-heading {
+      font-size: clamp(2.5rem, 6vw, 4.5rem);
+      font-weight: 800;
+      letter-spacing: -2.5px;
+      line-height: 1;
+      margin-bottom: 1rem;
+    }
+    .contact-sub {
+      color: rgba(255,255,255,0.38);
+      font-size: 1rem;
+      margin-bottom: 2.75rem;
+      max-width: 380px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    .contact-btns {
+      display: flex;
+      justify-content: center;
+      gap: 0.75rem;
+      flex-wrap: wrap;
+    }
+
+    /* ── FOOTER ── */
+    footer {
+      border-top: 1px solid rgba(255,255,255,0.05);
+      padding: 1.5rem 3rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    footer p {
+      font-size: 0.78rem;
+      color: rgba(255,255,255,0.2);
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ── NAVIGATION ── -->
+  <nav id="navbar">
+    <a href="#home" class="nav-logo">Taj<span>.</span></a>
+    <ul class="nav-links">
+      <li><a href="#about">About</a></li>
+      <li><a href="#projects">Projects</a></li>
+      <li><a href="#skills">Skills</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+  </nav>
+
+  <!-- ── HERO ──
+       CUSTOMISE: Put your photo (e.g. hero-photo.jpg) in the same folder.
+       Then change the background-image URL in the CSS above (.hero rule).
+       Best results: portrait or 3/4 shot, well-lit, with space on the left third.
+  -->
+  <section class="hero" id="home">
+    <div class="hero-overlay"></div>
+    <div class="hero-content">
+      <p class="hero-eyebrow">Welcome</p>
+      <h1 class="hero-name">Taj<br>Foley</h1>
+      <p class="hero-role">Robotics &nbsp;•&nbsp; Computer Vision &nbsp;•&nbsp; AI</p>
+      <p class="hero-tagline">Building intelligent systems at the intersection of robotics and the real world.</p>
+      <div class="hero-pills">
+        <span class="pill"><span class="pill-dot"></span>Brisbane, Australia</span>
+        <span class="pill">Open to Opportunities</span>
+        <span class="pill">QUT Engineering</span>
+      </div>
+      <div class="hero-btns">
+        <a href="#projects" class="btn-solid">View Projects</a>
+        <a href="#contact" class="btn-ghost">Reach Out</a>
+      </div>
+    </div>
+    <div class="scroll-hint">
+      <p>Scroll to explore</p>
+      <div class="chevron"></div>
+    </div>
+  </section>
+
+  <!-- ── PROJECTS ──
+       CUSTOMISE: For each .proj-bg, add a style="background-image: url('your-screenshot.jpg')"
+       and remove the emoji placeholder inside it.
+  -->
+  <section class="section" id="projects">
+    <p class="section-eyebrow">Work</p>
+    <h2 class="section-heading">Selected projects</h2>
+
+    <div class="projects-grid">
+
+      <!-- Featured card — spans full width -->
+      <div class="proj-card featured">
+        <div class="proj-bg-placeholder" style="background:#0e0e1c;">🛸</div>
+        <!-- To use a real image, replace above div with:
+        <div class="proj-bg" style="background-image: url('uav-detection.jpg');"></div>
+        -->
+        <div class="proj-overlay">
+          <p class="proj-cat">UAV &nbsp;·&nbsp; Computer Vision &nbsp;·&nbsp; YOLO</p>
+          <h3 class="proj-title">UAV Payload Detection System</h3>
+          <p class="proj-desc">Real-time YOLO-based detection running on Raspberry Pi, deployed to a live drone. Achieved 94% field accuracy.</p>
+        </div>
+      </div>
+
+      <div class="proj-card">
+        <div class="proj-bg-placeholder" style="background:#0c160c;">🗺️</div>
+        <div class="proj-overlay">
+          <p class="proj-cat">ROS &nbsp;·&nbsp; Path Planning</p>
+          <h3 class="proj-title">Multi-UAV Path Planning</h3>
+          <p class="proj-desc">Coordinated path planning for multiple UAVs sharing airspace.</p>
+        </div>
+      </div>
+
+      <div class="proj-card">
+        <div class="proj-bg-placeholder" style="background:#160c0c;">🤖</div>
+        <div class="proj-overlay">
+          <p class="proj-cat">SLAM &nbsp;·&nbsp; Navigation</p>
+          <h3 class="proj-title">SLAM Robot</h3>
+          <p class="proj-desc">Autonomous mapping and navigation using simultaneous localisation and mapping.</p>
+        </div>
+      </div>
+
+      <div class="proj-card">
+        <div class="proj-bg-placeholder" style="background:#0c0c16;">⚙️</div>
+        <div class="proj-overlay">
+          <p class="proj-cat">Embedded &nbsp;·&nbsp; Inverse Kinematics</p>
+          <h3 class="proj-title">Robotic Arm</h3>
+          <p class="proj-desc">Precision arm with IK solving and real-time servo control.</p>
+        </div>
+      </div>
+
+      <div class="proj-card">
+        <div class="proj-bg-placeholder" style="background:#160c10;">✈️</div>
+        <div class="proj-overlay">
+          <p class="proj-cat">Imaging &nbsp;·&nbsp; Systems</p>
+          <h3 class="proj-title">SkimWing Imagery Subsystem</h3>
+          <p class="proj-desc">Camera and imaging pipeline for the SkimWing UAV platform.</p>
+        </div>
+      </div>
+
+      <div class="proj-card">
+        <div class="proj-bg-placeholder" style="background:#0c1416;">🔬</div>
+        <div class="proj-overlay">
+          <p class="proj-cat">Testing &nbsp;·&nbsp; Software</p>
+          <h3 class="proj-title">VCU Test Suite</h3>
+          <p class="proj-desc">Comprehensive testing suite for vehicle control unit validation.</p>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ── ABOUT ──
+       CUSTOMISE: Replace 'about-photo.jpg' with your actual photo.
+       Also update the text to match your real background.
+  -->
+  <section class="section" id="about">
+    <div>
+      <p class="section-eyebrow">About</p>
+      <h2 class="section-heading" style="margin-bottom: 1.5rem;">Engineering at the edge of robotics and AI</h2>
+      <div class="about-body">
+        <p>
+          I'm a final-year engineering student at QUT, Brisbane, focused on robotics,
+          computer vision, and embedded AI systems. I've built everything from autonomous
+          UAV detection systems to SLAM robots and multi-agent path planners.
+        </p>
+        <p>
+          I care about systems that work in the real world — not just in simulation.
+          Currently looking for graduate roles in robotics and AI where I can keep
+          building things that matter.
+        </p>
+        <a href="resume.pdf" class="btn-solid" download>Download Resume</a>
+      </div>
+    </div>
+    <div class="about-img">
+      <!-- Replace src with your actual photo. The onerror hides it if missing. -->
+      <img src="about-photo.jpg" alt="Taj Foley" onerror="this.parentElement.style.background='#1a1a1a'">
+    </div>
+  </section>
+
+  <!-- ── SKILLS ── -->
+  <section class="section" id="skills">
+    <p class="section-eyebrow">Capabilities</p>
+    <h2 class="section-heading">Skills &amp; tools</h2>
+    <div class="skills-grid">
+      <div class="skill-group">
+        <p class="skill-group-label">Languages</p>
+        <div class="skill-row"><span class="skill-dot"></span>Python</div>
+        <div class="skill-row"><span class="skill-dot"></span>C</div>
+        <div class="skill-row"><span class="skill-dot"></span>Java</div>
+        <div class="skill-row"><span class="skill-dot"></span>Bash / Shell</div>
+      </div>
+      <div class="skill-group">
+        <p class="skill-group-label">Robotics &amp; Vision</p>
+        <div class="skill-row"><span class="skill-dot"></span>ROS / ROS2</div>
+        <div class="skill-row"><span class="skill-dot"></span>OpenCV</div>
+        <div class="skill-row"><span class="skill-dot"></span>YOLO</div>
+        <div class="skill-row"><span class="skill-dot"></span>ArUco Markers</div>
+        <div class="skill-row"><span class="skill-dot"></span>SLAM</div>
+      </div>
+      <div class="skill-group">
+        <p class="skill-group-label">Hardware &amp; Tools</p>
+        <div class="skill-row"><span class="skill-dot"></span>Raspberry Pi</div>
+        <div class="skill-row"><span class="skill-dot"></span>UAV Systems</div>
+        <div class="skill-row"><span class="skill-dot"></span>Embedded Systems</div>
+        <div class="skill-row"><span class="skill-dot"></span>Flask</div>
+        <div class="skill-row"><span class="skill-dot"></span>Git</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── CONTACT ──
+       CUSTOMISE: Replace email, LinkedIn URL, and GitHub URL with your real ones.
+  -->
+  <section class="section" id="contact">
+    <p class="section-eyebrow">Get in touch</p>
+    <h2 class="contact-heading">Let's work<br>together.</h2>
+    <p class="contact-sub">Open to graduate roles, internships, and interesting problems.</p>
+    <div class="contact-btns">
+      <a href="mailto:your@email.com" class="btn-solid">Send an Email</a>
+      <a href="https://linkedin.com/in/tajfoley" target="_blank" rel="noopener" class="btn-ghost">LinkedIn</a>
+      <a href="https://github.com/tajfoley" target="_blank" rel="noopener" class="btn-ghost">GitHub</a>
+    </div>
+  </section>
+
+  <!-- ── FOOTER ── -->
+  <footer>
+    <p>Taj Foley &copy; 2025</p>
+    <p>Robotics &amp; AI Engineer — Brisbane, AU</p>
+  </footer>
+
+  <script>
+    // Navbar background on scroll
+    const navbar = document.getElementById('navbar');
+    window.addEventListener('scroll', () => {
+      navbar.classList.toggle('scrolled', window.scrollY > 60);
+    }, { passive: true });
+
+    // Smooth scroll for all anchor links
+    document.querySelectorAll('a[href^="#"]').forEach(link => {
+      link.addEventListener('click', e => {
+        const target = document.querySelector(link.getAttribute('href'));
+        if (!target) return;
+        e.preventDefault();
+        target.scrollIntoView({ behavior: 'smooth' });
+      });
+    });
+  </script>
+
+</body>
+</html>
